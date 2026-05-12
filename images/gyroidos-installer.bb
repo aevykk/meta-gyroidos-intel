@@ -7,7 +7,9 @@ IMAGE_FSTYPES="wic wic.bmap"
 INITRAMFS_IMAGE_BUNDLE = "1"
 INITRAMFS_IMAGE = "gyroidos-installer-initramfs"
 
-GYROIDOS_DATAPART_LABEL = "gyroidosinstaller"
+GYROIDOS_DATAPART_LABEL = "gyroidosinstall"
+
+do_rootfs[depends] += "virtual/kernel:do_shared_workdir gyroidos-cml-modules:do_image_complete gyroidos-cml-firmware:do_image_complete"
 
 do_rootfs () {
 	cml_deploydir="${TOPDIR}/tmp/deploy/images/${MACHINE}"
@@ -30,6 +32,19 @@ do_rootfs () {
 	cp -r "$cmldata" "${rootfs_datadir}/gyroidos_data"
 	cp -r --dereference "${cml_deploydir}/cml-kernel/bzImage-initramfs-${machine_replaced}.bin.signed" "${rootfs_datadir}/gyroidos_boot/EFI/BOOT/BOOTX64.EFI"
 	cp "${TOPDIR}/../gyroidos/build/yocto/install_gyroidos.sh" "${rootfs_datadir}/"
+
+	# modules.img
+	if [ ! -f "${DEPLOY_DIR_IMAGE}/gyroidos-cml-modules-${MACHINE}.squashfs" ]; then
+		bbfatal "${DEPLOY_DIR_IMAGE}/gyroidos-cml-modules-${MACHINE}.squashfs does not exist. Image will not be bootable."
+	fi
+	cp --dereference "${DEPLOY_DIR_IMAGE}/gyroidos-cml-modules-${MACHINE}.squashfs" "${rootfs_datadir}/modules.img"
+
+	# firmware.img
+	if [ ! -f "${DEPLOY_DIR_IMAGE}/gyroidos-cml-firmware-${MACHINE}.squashfs" ]; then
+		bbfatal "${DEPLOY_DIR_IMAGE}/gyroidos-cml-firmware-${MACHINE}.squashfs does not exist. Image will not be bootable."
+	fi
+	cp --dereference "${DEPLOY_DIR_IMAGE}/gyroidos-cml-firmware-${MACHINE}.squashfs" "${rootfs_datadir}/firmware.img"
+
 }
 
 # multiconfig dependencies:
