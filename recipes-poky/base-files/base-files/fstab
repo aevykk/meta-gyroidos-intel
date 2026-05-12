@@ -9,8 +9,8 @@ tmpfs                       /var/volatile  tmpfs     nosuid,nodev,noexec   0  0
 
 tmpfs                       /tmp           tmpfs     defaults              0  0
 
-LABEL=gyroidosinstaller     /mnt           ext4      defaults              0  0
+LABEL=gyroidosinstall       /mnt           ext4      defaults              0  0
 
 /mnt/userdata               /data          none      bind,defaults         0  0
-/data/gyroidos_data/modules.img   /lib/modules   squashfs      loop,nosuid,nodev,noexec 0  0
-/data/gyroidos_data/firmware.img  /lib/firmware  squashfs      loop,nosuid,nodev,noexec 0  0
+/data/modules.img           /lib/modules   squashfs  loop,nosuid,nodev,noexec 0  0
+/data/firmware.img          /lib/firmware  squashfs  loop,nosuid,nodev,noexec 0  0
