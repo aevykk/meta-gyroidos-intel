@@ -2,7 +2,7 @@
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-echo "-----------------trustm3 installer------------------"
+echo "----------------- GyroidOS Installer ------------------"
 
 mkdir -p /lib/firmware
 mkdir -p /proc
@@ -41,9 +41,6 @@ for i in {1..4}; do
 	sleep 2
 	udevadm settle
 done
-
-modprobe loop
-modprobe btrfs
 
 mount -a
 
